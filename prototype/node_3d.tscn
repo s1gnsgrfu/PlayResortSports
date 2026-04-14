@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://b0qxlxdr1uy4q"]
+
+[ext_resource type="Script" uid="uid://d01onc1d3yw1e" path="res://prototype/character_body_3d.gd" id="1_4pfty"]
+[ext_resource type="Script" uid="uid://cjls6l6vp18hq" path="res://prototype/main.gd" id="1_5gmpd"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="3_1dw7q"]
+[ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="4_bsv75"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="5_ulfvp"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5gmpd"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_4xowi"]
+material = SubResource("StandardMaterial3D_5gmpd")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5gmpd"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_03cat"]
+albedo_color = Color(0, 0.5529412, 1, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_4pfty"]
+material = SubResource("StandardMaterial3D_03cat")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_5gmpd"]
+
+[sub_resource type="Resource" id="Resource_3uab8"]
+script = ExtResource("5_ulfvp")
+
+[node name="Node3D" type="Node3D" unique_id=1367357983]
+script = ExtResource("1_5gmpd")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1042243690]
+transform = Transform3D(1, 0, 0, 0, -0.65003186, 0.759907, 0, -0.759907, -0.65003186, 0, 24.320042, -28.900015)
+shadow_enabled = true
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1033171344]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=170817612]
+transform = Transform3D(20, 0, 0, 0, 0.105, 0, 0, 0, 20, 0, 0, 0)
+mesh = SubResource("BoxMesh_4xowi")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1581622852]
+transform = Transform3D(20, 0, 0, 0, 0.105, 0, 0, 0, 20, 0, 0, 0)
+shape = SubResource("BoxShape3D_5gmpd")
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="." unique_id=2080614600]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
+script = ExtResource("1_4pfty")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D" unique_id=489928048]
+mesh = SubResource("CylinderMesh_4pfty")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D" unique_id=2057982033]
+shape = SubResource("CylinderShape3D_5gmpd")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1143299124]
+physics_interpolation_mode = 1
+transform = Transform3D(1, 0, 0, 0, 0.9396927, 0.34202006, 0, -0.34202006, 0.9396927, 0, 4.25202, 7.9396925)
+top_level = true
+
+[node name="PhantomCameraHost" type="Node" parent="Camera3D" unique_id=1452800630]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("3_1dw7q")
+metadata/_custom_type_script = "uid://bd046eokvcnu2"
+
+[node name="PhantomCamera3D" type="Node3D" parent="." unique_id=64915569 node_paths=PackedStringArray("follow_target", "look_at_target")]
+transform = Transform3D(1, 0, 0, 0, 0.9396927, 0.34202006, 0, -0.34202006, 0.9396927, 0, 4.25202, 7.9396925)
+script = ExtResource("4_bsv75")
+follow_mode = 6
+follow_target = NodePath("../CharacterBody3D")
+look_at_target = NodePath("../CharacterBody3D")
+tween_resource = SubResource("Resource_3uab8")
+follow_offset = Vector3(0, 2.56, 7)
+follow_damping = true
+vertical_rotation_offset = 0.3490658503988659
+align_transform_with_view = Callable()
+align_position_with_view = Callable()
+align_rotation_with_view = Callable()
+metadata/_custom_type_script = "uid://csjccrhj5wnx7"
